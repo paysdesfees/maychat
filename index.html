@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>晶翎美學診所 - 2026 寵愛母親計畫｜AI 線上小編</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --bg-cream: #F7F2EC;
+    --bg-light-pink: #F5E8E4;
+    --bg-warm-white: #FBF8F4;
+    --accent-rose: #C9A9A0;
+    --accent-deep: #8B6F65;
+    --accent-soft: #E8D5CE;
+    --text-primary: #3D332E;
+    --text-secondary: #7A6B62;
+    --text-muted: #A89B92;
+    --border-soft: #E5D9D2;
+    --user-bubble: #C9A9A0;
+    --user-bubble-text: #FFFFFF;
+    --bot-bubble: #FFFFFF;
+    --bot-bubble-text: #3D332E;
+  }
+  
+  body {
+    font-family: 'Noto Serif TC', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', serif;
+    background: var(--bg-cream);
+    color: var(--text-primary);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+  
+  .layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    height: 100vh;
+    max-height: 100vh;
+  }
+  
+  /* === SIDEBAR === */
+  .sidebar {
+    background: var(--bg-warm-white);
+    border-right: 1px solid var(--border-soft);
+    padding: 32px 28px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .brand {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  
+  .brand-fr {
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--accent-deep);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  
+  .brand-tw {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .brand-tag {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+  }
+  
+  .campaign-card {
+    background: linear-gradient(135deg, var(--bg-light-pink) 0%, var(--accent-soft) 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+  
+  .campaign-label {
+    font-size: 11px;
+    color: var(--accent-deep);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  
+  .campaign-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  
+  .campaign-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  
+  .campaign-deadline {
+    font-size: 11px;
+    color: var(--accent-deep);
+    padding-top: 10px;
+    border-top: 1px solid rgba(139, 111, 101, 0.15);
+    letter-spacing: 1px;
+  }
+  
+  .info-section {
+    margin-bottom: 24px;
+  }
+  
+  .info-title {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+  
+  .info-content {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  
+  .info-content a {
+    color: var(--accent-deep);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .info-content a:hover {
+    color: var(--text-primary);
+  }
+  
+  .quick-topics {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-soft);
+  }
+  
+  .topic-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--border-soft);
+    color: var(--text-secondary);
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .topic-btn:hover {
+    background: var(--bg-light-pink);
+    color: var(--accent-deep);
+    border-color: var(--accent-soft);
+  }
+  
+  /* === MAIN CHAT AREA === */
+  .main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--bg-cream);
+  }
+  
+  .chat-header {
+    padding: 24px 40px;
+    background: var(--bg-warm-white);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  
+  .chat-header-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  
+  .chat-header-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+  
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px;
+    scroll-behavior: smooth;
+  }
+  
+  .messages {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .message {
+    display: flex;
+    gap: 12px;
+    animation: fadeIn 0.4s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .message.user {
+    flex-direction: row-reverse;
+  }
+  
+  .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  
+  .avatar.bot {
+    background: var(--bg-warm-white);
+    color: var(--accent-deep);
+    border: 1px solid var(--border-soft);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+  
+  .avatar.user {
+    background: var(--accent-rose);
+    color: white;
+  }
+  
+  .bubble {
+    max-width: 75%;
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  .bubble.bot {
+    background: var(--bot-bubble);
+    color: var(--bot-bubble-text);
+    border: 1px solid var(--border-soft);
+    border-top-left-radius: 4px;
+  }
+  
+  .bubble.user {
+    background: var(--user-bubble);
+    color: var(--user-bubble-text);
+    border-top-right-radius: 4px;
+  }
+  
+  .typing {
+    display: flex;
+    gap: 6px;
+    padding: 8px 4px;
+  }
+  
+  .typing span {
+    width: 8px;
+    height: 8px;
+    background: var(--accent-rose);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+  }
+  
+  .typing span:nth-child(1) { animation-delay: -0.32s; }
+  .typing span:nth-child(2) { animation-delay: -0.16s; }
+  
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+  
+  /* === INPUT AREA === */
+  .input-area {
+    padding: 20px 40px 28px;
+    background: var(--bg-warm-white);
+    border-top: 1px solid var(--border-soft);
+  }
+  
+  .input-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  
+  .input-field {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text-primary);
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+    max-height: 120px;
+    min-height: 48px;
+    transition: border-color 0.2s;
+  }
+  
+  .input-field:focus {
+    border-color: var(--accent-rose);
+  }
+  
+  .input-field::placeholder {
+    color: var(--text-muted);
+  }
+  
+  .send-btn {
+    background: var(--accent-rose);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0 24px;
+    height: 48px;
+    font-family: inherit;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  
+  .send-btn:hover:not(:disabled) {
+    background: var(--accent-deep);
+  }
+  
+  .send-btn:disabled {
+    background: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  .disclaimer {
+    max-width: 720px;
+    margin: 12px auto 0;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  
+  /* === MOBILE === */
+  @media (max-width: 768px) {
+    .layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+    }
+    
+    .sidebar {
+      display: none;
+    }
+    
+    .chat-header, .input-area {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    
+    .chat-area {
+      padding: 24px 16px;
+    }
+    
+    .bubble {
+      max-width: 85%;
+      font-size: 14px;
+    }
+  }
+  
+  /* Scrollbar */
+  .chat-area::-webkit-scrollbar,
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .chat-area::-webkit-scrollbar-thumb,
+  .sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-soft);
+    border-radius: 3px;
+  }
+  
+  .chat-area::-webkit-scrollbar-track,
+  .sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar">
+    
+    <div class="brand">
+      <div class="brand-fr">Pays des fées</div>
+      <div class="brand-tw">晶 翎 美 學</div>
+      <div class="brand-tag">人 間 仙 境</div>
+    </div>
+    
+    <div class="campaign-card">
+      <div class="campaign-label">2 0 2 6 . M O T H E R ' S . D A Y</div>
+      <div class="campaign-title">寵愛母親計畫</div>
+      <div class="campaign-sub">留駐時光<br>與自己身體好好對話</div>
+      <div class="campaign-deadline">活 動 至 5 / 3 1 止</div>
+    </div>
+    
+    <div class="info-section">
+      <div class="info-title">五 大 計 畫</div>
+      <div class="info-content">
+        ・臉部拉提 時光凍結<br>
+        ・體態精雕 輕盈再現<br>
+        ・活力大健康 由內而外<br>
+        ・皮膚重生 透亮無瑕<br>
+        ・閨密母女 時光共賞
+      </div>
+    </div>
+    
+    <div class="info-section">
+      <div class="info-title">診 所 資 訊</div>
+      <div class="info-content">
+        台北市中正區<br>
+        仁愛路二段 72 號 1-2 樓<br><br>
+        <a href="tel:0223972555">📞 (02) 2397-2555</a><br>
+        <a href="https://line.me/R/ti/p/@pdf_beaute" target="_blank">💬 LINE @pdf_beaute</a>
+      </div>
+    </div>
+    
+    <div class="quick-topics">
+      <div class="info-title" style="margin-bottom: 14px;">想 聊 聊</div>
+      <button class="topic-btn" onclick="quickAsk('我最近覺得臉部有點鬆弛')">臉部鬆弛、想拉提</button>
+      <button class="topic-btn" onclick="quickAsk('產後身材一直回不去')">想改善體態</button>
+      <button class="topic-btn" onclick="quickAsk('最近一直覺得很疲倦')">疲倦、想調理身體</button>
+      <button class="topic-btn" onclick="quickAsk('想帶媽媽一起做')">想帶媽媽一起</button>
+    </div>
+    
+  </aside>
+  
+  <!-- ========== MAIN CHAT ========== -->
+  <main class="main">
+    
+    <header class="chat-header">
+      <div class="chat-header-title">晶 翎 線 上 小 編</div>
+      <div class="chat-header-sub">由 AI 協助為您介紹母親節寵愛計畫</div>
+    </header>
+    
+    <div class="chat-area" id="chatArea">
+      <div class="messages" id="messages">
+        <!-- Initial bot greeting -->
+        <div class="message">
+          <div class="avatar bot">P</div>
+          <div class="bubble bot">您好，我是晶翎的線上小編 ☺
+
+歡迎來到 2026 寵愛母親計畫
+我們為每一位想好好照顧自己的女性
+規劃了五大主題方向
+
+方便先請問您
+今天最想了解的是哪一個方向呢？
+
+或是想聊聊最近的身體與肌膚狀態
+小編都很樂意為您介紹 🌷</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="input-area">
+      <div class="input-wrapper">
+        <textarea 
+          class="input-field" 
+          id="userInput" 
+          placeholder="想聊聊您的需求..."
+          rows="1"
+        ></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">送 出</button>
+      </div>
+      <div class="disclaimer">
+        本對話由 AI 提供，所有療程細節以醫師面診評估為準
+      </div>
+    </div>
+    
+  </main>
+  
+</div>
+
+<script>
+const SYSTEM_PROMPT = `# Role: 晶翎美學診所 - 2026 母親節線上小編
+
+您是晶翎美學診所的線上小編，協助客人了解 2026 寵愛母親計畫，並引導預約由醫師面診評估。診所核心理念為「由內而外健康美學」。活動期間至 5/31。
+
+## 對話範圍規範（重要）
+
+您**只回答以下範圍內的問題**：
+1. 晶翎美學診所的母親節五大計畫內容
+2. 療程相關詢問（價格、適合對象、選擇方向）
+3. 預約諮詢相關
+4. 診所基本資訊（地址、電話、LINE）
+
+**遇到範圍外的問題，請溫和拒絕並導回主題**：
+- 與診所無關的問題（時事、天氣、寫作業、寫程式、人生諮詢等）→ 溫和回覆「這部分小編就無法協助了～」並導回母親節方案
+- 醫療診斷類問題（我這個症狀是什麼病、會不會是某某疾病）→ 明確說明 AI 無法診斷，請預約醫師面診
+- 詢問其他診所、價格比較、評論競品 → 不評論其他診所，只專注介紹晶翎的服務
+- 騷擾、攻擊性、無意義訊息 → 禮貌但堅定地請對方理性溝通，無法回應就引導至專線
+
+## 對話節奏「2 問就推薦」原則
+
+- **第 1 輪**：溫暖回應 + 1 個釐清問題
+- **第 2 輪**：根據回答，直接給方向 + 開放修正 + 預約引導
+- **不要超過 2 輪釐清**
+
+特殊狀況：
+- 客人主動講明預算 + 主訴 → 第 1 輪就推薦方向
+- 客人直接問價格 → 簡短回答區間 + 反問 1 個釐清
+
+## 五大計畫 Knowledge Base
+
+### 計畫01：臉部拉提（時光凍結）
+主訴：皮膚鬆弛、法令紋深、輪廓線條下垂
+- 基礎緊緻組 19,999：海芙音波 300 發 + 喬雅登或緹奧希 1 支（二選一）+ 肉毒除皺 3 區或拉提（二選一）+ AI 肌膚檢測
+- 明星逆齡組 59,999：海芙音波 600 發 + 洢蓮絲(S) 1 支 + 複合水光針 1 堂（薇貝拉/玻尿酸/雙美膠原 三選一）+ 高 C 點滴 1 堂 + AI 檢測
+- 尊榮極致組 99,999 ⭐最受歡迎：彈力針/雙機雷射 2 堂/複合水光針 1 堂（三選一）+ 無雙電波 600 發/微針電波/海芙音波 900 發（三選一）+ 肉毒除皺 3 區 + 肉毒 V 臉或拉提（二選一）+ 洢蓮斯 2 支或玻尿酸 2 支（二選一）+ 高 C 點滴 3 堂
+
+### 計畫02：體態精雕（輕盈再現）
+主訴：腹部鬆弛、代謝下降、局部脂肪堆積
+- 入門精雕組 19,999：NEO 體雕 1 堂 + EMBODY 4 堂 + 瘦瘦筆 1 次 + Inbody 檢測
+- 緊緻曲線組 59,999：NEO 體雕 2 堂 或 身體音波 600 發（二選一）+ 肉毒小腿 或 美國消脂針 2 瓶（二選一）+ 瘦瘦筆 1 支/燃脂點滴 2 堂/肉毒肩膀 1 堂（三選一）+ EMBODY 2 堂 + G 動椅 2 堂 + Inbody 檢測 2 堂
+- 全身燃脂組 99,999 ⭐最受歡迎：NEO 體雕 4 堂/身體音波 1200 發/身體微針電波 1 堂（三選一）+ 氦氖雷射 10 堂 或 美國消脂針 2 瓶（二選一）+ 瘦瘦筆 2 支 或 燃脂點滴 7 堂（二選一）+ 肉毒肩膀 1 堂 或 燃脂點滴 3 堂（二選一）+ EMBODY 10 堂 + G 動椅 10 堂 + Inbody 檢測 4 堂 + 身體微量元素檢測
+
+### 計畫03：活力大健康（由內而外）
+主訴：睡眠不佳、易疲勞、身體循環代謝差
+- 基礎修復組 19,999：高 C 點滴 5 堂 + 全能氦氖雷射 5 堂 + EMBODY 5 堂 + 身體微量元素檢測
+- 活力修復組 59,999：全能氦氖雷射 5 堂 + 皇家修復點滴 5 堂 + 日常健康補給（洛克靈/高效 Lypo-C/博訊高蛋白粉 三選一）+ EMBODY 5 堂 + G 動椅 5 堂 + 身體微量元素檢測 + 尊享禮遇（精油按摩 30 分鐘 或 海菲秀不含 JLO 二選一）
+- 巔峰淨化組 99,999：血液淨化 1 堂 + 全能氦氖雷射 3 堂 + 皇家修復點滴 6 堂 + 日常健康補給四選一 + 全套抽血健驗 + EMBODY 10 堂 + 身體微量元素檢測 + 尊享禮遇（精油按摩 60 分鐘 或 海菲秀含 JLO 二選一）
+
+### 計畫04：皮膚重生（透亮無瑕）
+主訴：蠟黃暗沉、深淺層斑點、毛孔粗大
+- 基礎緊緻組 19,999：基礎水光 1 堂 + 高 C 點滴 2 堂 + 海菲秀（含 JLO）2 堂 + AI 檢測
+- 明星逆齡組 39,999：複合水光針 2 堂（三選二）+ 高 C 點滴 5 堂 + 純氧太空艙 2 堂 + 海菲秀
+- 尊榮極致組 99,999 ⭐最受歡迎：肌底再生重塑（微針電波/微針筆+彈力針/逆時針 2c.c 三選一）+ 複合水光針 2 堂（三選二）+ 海菲秀 3 堂 + 複合式雷射 4 堂 + 高 C 點滴 5 堂 + 肉毒除皺 3 區或拉提
+
+### 計畫05：閨密母女（時光共賞）
+觸發詞：跟媽媽、跟姊妹、兩個人、一起做、帶媽媽、閨蜜、母女
+三組皆 39,999 為「全包式」，僅水光針有口味選擇
+- 重塑肌齡組 39,999（新手）：彈力針 4 c.c + 肉毒除皺 3 區 + AI 檢測 2 堂 + 尊享：肉毒除皺 3 區
+- 輪廓緊緻組 39,999（拉提）：彈力針 2 c.c + 雙機雷射 1 堂 + AI 檢測 2 堂 + 尊享：音波 300 發
+- 發光水嫩組 39,999（保水）：彈力針 2 c.c + 複合水光針 1 堂 + AI 檢測 2 堂 + 尊享：雙機雷射 2 堂
+
+### 加選專區（晶翎嚴選）
+**核心規則：嚴選療程僅供已購買母親節計畫方案的客人加購，絕對不能單獨購買**
+- 不可將嚴選作為「替代選項」介紹
+- 客人想單做嚴選療程 → 必須說明此規則並引導預約
+
+## Rules
+
+- 自稱「小編」、稱呼對方「您」
+- 所有療程判斷交給「醫師面診評估」
+- **絕對禁止提及任何特定醫師姓名（包含謝院長等），統一只能用「醫師」二字**
+- 單則回覆最多 5 行，每行一個短意思
+- 釐清不超過 2 輪，第 2 輪一定要給方向
+- 一次只問 1 個問題
+- 用「假設句」代替「無限問題」
+- 不要列完整方案內容（除非客人明確要求）
+- 推薦給「主菜 + 備案」，但備案必須也是五大計畫之一
+- 預約引導用降低門檻話術：「醫師面診是免費的」「不一定要當天決定」
+- 禁語：保證效果、超划算、最低價、CP 值、親愛的、絕對、一定
+- 改用：改善、重塑、找回、煥新
+- 每行一個意思，段落間空行
+- Emoji 每則最多 1 個
+- 「N 選 X」項目要主動說明可選的方向
+
+## Fallback
+- 超出五大計畫範圍（眼袋、私密處、植髮等）→「這部分屬於較精細的專業療程，建議由醫師面診評估後再給您建議，避免不必要的浪費☺」並引導預約
+- 對話範圍外的問題 → 溫和拒絕，導回主題
+
+請以溫暖、專業、不推銷的語氣回應每一位客人。`;
+
+const messages = [];
+let isLoading = false;
+
+const messagesEl = document.getElementById('messages');
+const inputEl = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const chatArea = document.getElementById('chatArea');
+
+// Auto-resize textarea
+inputEl.addEventListener('input', () => {
+  inputEl.style.height = 'auto';
+  inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+});
+
+// Enter to send (Shift+Enter for newline)
+inputEl.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+function quickAsk(text) {
+  inputEl.value = text;
+  sendMessage();
+}
+
+function addMessage(role, content) {
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `message ${role}`;
+  
+  const avatar = document.createElement('div');
+  avatar.className = `avatar ${role === 'user' ? 'user' : 'bot'}`;
+  avatar.textContent = role === 'user' ? '您' : 'P';
+  
+  const bubble = document.createElement('div');
+  bubble.className = `bubble ${role === 'user' ? 'user' : 'bot'}`;
+  bubble.textContent = content;
+  
+  msgDiv.appendChild(avatar);
+  msgDiv.appendChild(bubble);
+  messagesEl.appendChild(msgDiv);
+  
+  setTimeout(() => {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }, 50);
+  
+  return bubble;
+}
+
+function showTyping() {
+  const msgDiv = document.createElement('div');
+  msgDiv.className = 'message';
+  msgDiv.id = 'typingIndicator';
+  
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar bot';
+  avatar.textContent = 'P';
+  
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble bot';
+  bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  
+  msgDiv.appendChild(avatar);
+  msgDiv.appendChild(bubble);
+  messagesEl.appendChild(msgDiv);
+  
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function removeTyping() {
+  const indicator = document.getElementById('typingIndicator');
+  if (indicator) indicator.remove();
+}
+
+async function sendMessage() {
+  const text = inputEl.value.trim();
+  if (!text || isLoading) return;
+  
+  isLoading = true;
+  sendBtn.disabled = true;
+  
+  addMessage('user', text);
+  messages.push({ role: 'user', content: text });
+  
+  inputEl.value = '';
+  inputEl.style.height = 'auto';
+  
+  showTyping();
+  
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: messages,
+      })
+    });
+    
+    const data = await response.json();
+    removeTyping();
+    
+    if (data.content && data.content[0] && data.content[0].text) {
+      const reply = data.content[0].text;
+      addMessage('assistant', reply);
+      messages.push({ role: 'assistant', content: reply });
+    } else {
+      addMessage('assistant', '抱歉，小編暫時遇到一些狀況，請稍後再試，或直接撥打 (02) 2397-2555 聯繫我們 ☺');
+    }
+  } catch (error) {
+    removeTyping();
+    console.error('API Error:', error);
+    addMessage('assistant', '抱歉，小編暫時遇到一些狀況，請稍後再試，或直接撥打 (02) 2397-2555 聯繫我們 ☺');
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    inputEl.focus();
+  }
+}
+
+inputEl.focus();
+</script>
+
+</body>
+</html>
